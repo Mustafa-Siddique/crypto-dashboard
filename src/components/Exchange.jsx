@@ -1,92 +1,33 @@
 import React, { Fragment, useState } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend,
-} from "chart.js";
-import { Listbox } from "@headlessui/react";
-import { Transition } from "@headlessui/react";
-import { Line } from "react-chartjs-2";
+import { AiFillCaretDown } from "react-icons/ai";
+import { Listbox, Menu, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend
-);
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
-export const ChartSection = () => {
+export const Exchange = () => {
+  // Dropdown for Sell
+  const option = [{ name: "BTC" }, { name: "ETH" }];
+  const [selected, setSelected] = useState(option[0]);
 
-  // Dropdown Selector 1
-  const crypto = [{ name: "BTC" }, { name: "ETH" }, { name: "BNB" }];
-  const [selected, setSelected] = useState(crypto[0]);
+  // Dropdown for Buy
+  const option2 = [{ name: "BTC" }, { name: "ETH" }];
+  const [selected2, setSelected2] = useState(option2[0]);
 
-  // Dropdown Selector 2
-  const chartType = [{ name: "Area" }, { name: "Bar" }, { name: "Line" }];
-  const [selected2, setSelected2] = useState(chartType[0]);
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Chart.js Line Chart",
-      },
-    },
-  };
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        fill: true,
-        label: "Dataset 2",
-        data: [10, 30, 46, 38, 59, 80, 81],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
-  };
-  
   return (
-    <div className="bg-white rounded my-3 p-4">
-      <div className="flex justify-between flex-col md:flex-row">
-        <div>
-          <button className="border rounded-lg p-3 mx-2">1D</button>
-          <button className="border rounded-lg p-3 mx-2">1M</button>
-          <button className="border rounded-lg p-3 mx-2">1W</button>
-          <button className="border rounded-lg p-3 mx-2">6M</button>
-          <button className="border rounded-lg p-3 mx-2">1Y</button>
-        </div>
-        <div className="flex mt-4 md:mt-0">
-          {/* Dropdown Selector 1 */}
+    <div className="bg-white p-4 rounded h-full">
+      <h4 className="text-xl font-semibold">Exchange Coins</h4>
+
+      {/* Sell */}
+      <div className="flex justify-between mt-12 w-full">
+        <div className="flex items-center justify-between w-full">
+          <p className="text-red-400 mr-2">SELL</p>
           <Listbox value={selected} onChange={setSelected}>
-            <div className="relative mr-2">
-              <Listbox.Button className="relative w-full cursor-default rounded-lg py-3 border pl-3 pr-10 text-left shadow-md sm:text-sm">
-                <span className="block font-semibold truncate">{selected.name}</span>
+            <div className="relative">
+              <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md sm:text-sm">
+                <span className="block truncate">{selected.name}</span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
                     className="h-5 w-5 text-gray-400"
@@ -100,8 +41,8 @@ export const ChartSection = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {crypto.map((person, personIdx) => (
+                <Listbox.Options className="absolute bottom-0 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {option.map((person, personIdx) => (
                     <Listbox.Option
                       key={personIdx}
                       className={({ active }) =>
@@ -138,11 +79,23 @@ export const ChartSection = () => {
               </Transition>
             </div>
           </Listbox>
-          {/* Dropdown Selector 2 */}
+          <input
+            type="number"
+            id=""
+            className="border rounded py-2 text-black font-semibold focus:outline-none px-2"
+            placeholder="Enter Value"
+          />
+        </div>
+      </div>
+
+      {/* BUY */}
+      <div className="flex justify-between mt-6 w-full">
+        <div className="flex items-center justify-between w-full">
+          <p className="text-green-400 mr-2">BUY</p>
           <Listbox value={selected2} onChange={setSelected2}>
             <div className="relative">
-              <Listbox.Button className="relative w-full cursor-default rounded-lg py-3 border pl-3 pr-10 text-left shadow-md sm:text-sm">
-                <span className="block font-semibold truncate">{selected2.name}</span>
+              <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md sm:text-sm">
+                <span className="block truncate">{selected2.name}</span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
                     className="h-5 w-5 text-gray-400"
@@ -157,7 +110,7 @@ export const ChartSection = () => {
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {chartType.map((person, personIdx) => (
+                  {option2.map((person, personIdx) => (
                     <Listbox.Option
                       key={personIdx}
                       className={({ active }) =>
@@ -194,10 +147,14 @@ export const ChartSection = () => {
               </Transition>
             </div>
           </Listbox>
+          <input
+            type="number"
+            id=""
+            className="border rounded py-2 text-black font-semibold focus:outline-none px-2"
+            placeholder="Enter Value"
+          />
         </div>
       </div>
-      {/* Chart Here! */}
-      <Line options={options} data={data} />
     </div>
   );
 };

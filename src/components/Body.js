@@ -1,6 +1,8 @@
 import React from "react";
 import { ChartSection } from "./ChartSection";
 import { CryptoRankings } from "./CryptoRankings";
+import { Exchange } from "./Exchange";
+import { Portfolio } from "./Portfolio";
 import { SearchArea } from "./SearchArea";
 
 export const Body = () => {
@@ -8,8 +10,18 @@ export const Body = () => {
     <div className="container mx-auto bg-slate-100 rounded-lg mt-12">
       <div className="flex flex-col p-4 lg:flex-row">
         <div className="w-full md:w-8/12 flex-5 px-2">
-          <SearchArea />
-          <ChartSection/>
+          <div>
+            <SearchArea />
+            <ChartSection />
+          </div>
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-full max-h-[350px] lg:w-6/12">
+              <Portfolio/>
+            </div>
+            <div className="w-full max-h-[350px] pl-0 lg:pl-2 lg:w-6/12">
+              <Exchange/>
+            </div>
+          </div>
         </div>
         <div className="w-full md:w-4/12">
           <CryptoRankings />
