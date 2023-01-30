@@ -2,31 +2,20 @@ import React, { useState, useEffect } from "react";
 import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { getTrendingStart } from "../features/trendingSlice";
 
 export const CryptoRankings = () => {
-
-  const [data, setData] = useState([]);
+  const data = useSelector((state) => state.trending.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getTrending();
+    dispatch(getTrendingStart());
   }, []);
 
-  const getTrending = async () => {
-     
-     let reqOptions = {
-       url: "https://api.coingecko.com/api/v3/search/trending",
-       method: "GET",
-     }
-     
-     let response = await axios.request(reqOptions);
-     setData(response.data);
-     console.log(response.data)
-     dispatch(getTrending(response.data));
-  }
-  console.log(data)
+  useEffect(() => {
+    console.log(data, 'trending data');
+  }, [data]);
   
-
   return (
     <div className="bg-white text-black rounded-md p-2 h-full">
       <h4 className="font-bold mb-6">Cryptocurrency by Market Cap</h4>
