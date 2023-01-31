@@ -9,7 +9,7 @@ import {
 function* fetchChart() {
   try {
     const reqOptions = {
-      url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eth",
+      url: `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=inr&days=1`,
       method: "GET",
     };
 
