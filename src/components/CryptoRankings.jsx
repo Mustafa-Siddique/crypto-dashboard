@@ -11,9 +11,9 @@ export const CryptoRankings = () => {
     dispatch(getTrendingStart());
   }, []);
 
-  useEffect(() => {
-    console.log(data, "trending data");
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data, "trending data");
+  // }, [data]);
 
   return (
     <div className="bg-white text-black rounded-md p-2 h-full">

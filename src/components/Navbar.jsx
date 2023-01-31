@@ -1,12 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
-import { Bars3Icon , XMarkIcon } from "@heroicons/react/24/outline";
-
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "PageX", href: "/", current: false },
-];
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export const Navbar = () => {
   return (
@@ -42,16 +37,15 @@ export const Navbar = () => {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className="text-gray-700 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                    <Link
+                      to="/"
+                      className="text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Home
+                    </Link>
+                    <button className="bg-amber-300 py-1 px-3 rounded font-semibold hover:bg-amber-500 hover:text-white">
+                      Connect Wallet
+                    </button>
                   </div>
                 </div>
               </div>
@@ -60,17 +54,13 @@ export const Navbar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as={Link}
-                  to={item.href}
-                  className="text-gray-700 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              <Disclosure.Button
+                as={Link}
+                to="/"
+                className="text-gray-700 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Home
+              </Disclosure.Button>
             </div>
           </Disclosure.Panel>
         </>

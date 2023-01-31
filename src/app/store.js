@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import trendingReducer from "../features/trendingSlice";
+import exchangeReducer from "../features/exchangeSlice";
 import saga from "redux-saga";
 import { rootSaga } from "./rootSaga";
 import logger from "redux-logger";
-
-// create an instance of the store and export it. The store is configured with the trendingReducer. and it should have a Middleware.
 
 const sagaMiddleware = saga();
 
 export const store = configureStore({
   reducer: {
     trending: trendingReducer,
+    exchange: exchangeReducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({ thunk: false }),
