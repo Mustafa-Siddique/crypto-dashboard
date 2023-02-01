@@ -3,7 +3,7 @@ import { PiePortfolio } from "./PiePortfolio";
 
 export const Portfolio = () => {
   return (
-    <div className="bg-white p-4 rounded-lg">
+    <div className="bg-white p-4 rounded-lg relative">
       <div className="flex justify-between">
         <span className="text-xl font-semibold">Portfolio</span>
         <span className="text-gray-500">

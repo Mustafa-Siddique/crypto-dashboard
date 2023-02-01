@@ -2,19 +2,30 @@ import React, { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { FaSearch } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setDropDown } from "../features/chartSlice";
 
 export const SearchArea = () => {
+  const dispatch = useDispatch();
 
   const option = [{ name: "USD" }, { name: "INR" }];
-
-  const [selected, setSelected] = useState(option[0]);
+  const selectedCurrency = useSelector((state) => state.chart.dropdownCurrency);
 
   return (
     <div className="flex justify-between">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox
+        value={selectedCurrency}
+        onChange={(e) =>
+          dispatch(
+            setDropDown({ type: "currency", value: e.name.toLowerCase() })
+          )
+        }
+      >
         <div className="relative">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md sm:text-sm">
-            <span className="block truncate">{selected.name}</span>
+            <span className="block truncate">
+              {selectedCurrency.toUpperCase()}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
@@ -29,26 +40,26 @@ export const SearchArea = () => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {option.map((person, personIdx) => (
+              {option.map((currency, currencyIdx) => (
                 <Listbox.Option
-                  key={personIdx}
+                  key={currencyIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-2 pr-4 ${
                       active ? "bg-amber-100 text-amber-900" : "text-gray-900"
                     }`
                   }
-                  value={person}
+                  value={currency}
                 >
-                  {({ selected }) => (
+                  {({ selectedCurrency }) => (
                     <>
                       <span
                         className={`block truncate ${
-                          selected ? "font-medium" : "font-normal"
+                          selectedCurrency ? "font-medium" : "font-normal"
                         }`}
                       >
-                        {person.name}
+                        {currency.name}
                       </span>
-                      {selected ? (
+                      {selectedCurrency ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>

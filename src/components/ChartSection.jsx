@@ -14,6 +14,8 @@ import { Listbox } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
 import { Line } from "react-chartjs-2";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { setDropDown } from "../features/chartSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -27,14 +29,33 @@ ChartJS.register(
 );
 
 export const ChartSection = () => {
+  const dispatch = useDispatch();
 
-  // Dropdown Selector 1
-  const crypto = [{ name: "BTC" }, { name: "ETH" }, { name: "BNB" }];
-  const [selected, setSelected] = useState(crypto[0]);
+  // Asset Selector
+  const crypto = [
+    { name: "BITCOIN" },
+    { name: "ETHEREUM" },
+    { name: "BINANCE" },
+  ];
+  const selectedCrypto = useSelector((state) => state.chart.dropdownAsset);
 
   // Dropdown Selector 2
   const chartType = [{ name: "Area" }, { name: "Bar" }, { name: "Line" }];
   const [selected2, setSelected2] = useState(chartType[0]);
+
+  // Chart Timeline Selector
+  const timeline = [
+    { name: "1D", value: "1" },
+    { name: "1W", value: "7" },
+    { name: "1M", value: "30" },
+    { name: "1Y", value: "365" },
+  ];
+  const selectedTimeline = useSelector((state) => state.chart.dropdownTime);
+
+  // Function to dispatch timeline to redux on click of button
+  const handleTimeline = (e) => {
+    dispatch(setDropDown({ type: "time", value: e.value }));
+  };
 
   const options = {
     responsive: true,
@@ -70,23 +91,38 @@ export const ChartSection = () => {
       },
     ],
   };
-  
+
   return (
     <div className="bg-white rounded my-3 p-4">
       <div className="flex justify-between flex-col md:flex-row">
         <div>
-          <button className="border rounded-lg p-3 mx-2">1D</button>
-          <button className="border rounded-lg p-3 mx-2">1M</button>
-          <button className="border rounded-lg p-3 mx-2">1W</button>
-          <button className="border rounded-lg p-3 mx-2">6M</button>
-          <button className="border rounded-lg p-3 mx-2">1Y</button>
+          {timeline.map((item) => (
+            <button
+              key={item.name}
+              onClick={() => handleTimeline(item)}
+              className={
+                selectedTimeline === item.value
+                  ? "border-amber-500 bg-amber-100 border rounded-lg p-3 mx-2"
+                  : "border rounded-lg p-3 mx-2"
+              }
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
         <div className="flex mt-4 md:mt-0">
           {/* Dropdown Selector 1 */}
-          <Listbox value={selected} onChange={setSelected}>
+          <Listbox
+            value={selectedCrypto}
+            onChange={(e) =>
+              dispatch(setDropDown({ type: "asset", value: e.toLowerCase() }))
+            }
+          >
             <div className="relative mr-2">
               <Listbox.Button className="relative w-full cursor-default rounded-lg py-3 border pl-3 pr-10 text-left shadow-md sm:text-sm">
-                <span className="block font-semibold truncate">{selected.name}</span>
+                <span className="block font-semibold truncate">
+                  {selectedCrypto.toUpperCase()}
+                </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
                     className="h-5 w-5 text-gray-400"
@@ -101,9 +137,9 @@ export const ChartSection = () => {
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {crypto.map((person, personIdx) => (
+                  {crypto.map((asset, assetIdx) => (
                     <Listbox.Option
-                      key={personIdx}
+                      key={assetIdx}
                       className={({ active }) =>
                         `relative cursor-default select-none py-2 pl-2 pr-4 ${
                           active
@@ -111,25 +147,17 @@ export const ChartSection = () => {
                             : "text-gray-900"
                         }`
                       }
-                      value={person}
+                      value={asset.name}
                     >
-                      {({ selected }) => (
+                      {({ selectedCrypto }) => (
                         <>
                           <span
                             className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
+                              selectedCrypto ? "font-medium" : "font-normal"
                             }`}
                           >
-                            {person.name}
+                            {asset.name}
                           </span>
-                          {selected ? (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          ) : null}
                         </>
                       )}
                     </Listbox.Option>
@@ -142,7 +170,9 @@ export const ChartSection = () => {
           <Listbox value={selected2} onChange={setSelected2}>
             <div className="relative">
               <Listbox.Button className="relative w-full cursor-default rounded-lg py-3 border pl-3 pr-10 text-left shadow-md sm:text-sm">
-                <span className="block font-semibold truncate">{selected2.name}</span>
+                <span className="block font-semibold truncate">
+                  {selected2.name}
+                </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
                     className="h-5 w-5 text-gray-400"
