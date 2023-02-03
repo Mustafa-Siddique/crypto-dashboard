@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +15,8 @@ import { Transition } from "@headlessui/react";
 import { Line } from "react-chartjs-2";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { setDropDown } from "../features/chartSlice";
+import { getChartStart, setDropDown } from "../features/chartSlice";
+import moment from "moment";
 
 ChartJS.register(
   CategoryScale,
@@ -31,13 +32,20 @@ ChartJS.register(
 export const ChartSection = () => {
   const dispatch = useDispatch();
 
+  // Importing the chartSlice from the redux store
+  const selectedCrypto = useSelector((state) => state.chart.dropdownAsset);
+  const selectedTimeline = useSelector((state) => state.chart.dropdownTime);
+  const selectedCurrency = useSelector((state) => state.chart.dropdownCurrency);
+  const chartData = useSelector((state) => state.chart.data);
+  // console.log("Chart Data: ", chartData.prices.item[0]);
+
   // Asset Selector
   const crypto = [
     { name: "BITCOIN" },
     { name: "ETHEREUM" },
-    { name: "BINANCE" },
+    { name: "BINANCECOIN" },
+    { name: "SOLANA" },
   ];
-  const selectedCrypto = useSelector((state) => state.chart.dropdownAsset);
 
   // Dropdown Selector 2
   const chartType = [{ name: "Area" }, { name: "Bar" }, { name: "Line" }];
@@ -50,7 +58,28 @@ export const ChartSection = () => {
     { name: "1M", value: "30" },
     { name: "1Y", value: "365" },
   ];
-  const selectedTimeline = useSelector((state) => state.chart.dropdownTime);
+
+  // UseEffect to fetch the chart data on page load
+  useEffect(() => {
+    dispatch(
+      getChartStart({
+        asset: selectedCrypto,
+        time: selectedTimeline,
+        currency: selectedCurrency,
+      })
+    );
+  }, []);
+
+  // UseEffect to dispatch the chart data to redux
+  useEffect(() => {
+    dispatch(
+      getChartStart({
+        asset: selectedCrypto,
+        time: selectedTimeline,
+        currency: selectedCurrency,
+      })
+    );
+  }, [selectedCrypto, selectedTimeline]);
 
   // Function to dispatch timeline to redux on click of button
   const handleTimeline = (e) => {
@@ -69,25 +98,24 @@ export const ChartSection = () => {
       },
     },
   };
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+
+  const labels = chartData.prices
+    ? chartData.prices.map((item) =>
+        moment(item[0]).format(selectedTimeline < 2 ? "LT" : "MMM Do YY")
+      )
+    : ["January", "February", "March", "April", "May", "June", "July"];
 
   const data = {
     labels,
     datasets: [
       {
         fill: true,
-        label: "Dataset 2",
-        data: [10, 30, 46, 38, 59, 80, 81],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        // converting epoch time to date using moment
+        data: chartData.prices
+          ? chartData.prices.map((item) => item[1])
+          : [0, 10, 5, 2, 20, 30, 45],
+        borderColor: "#F59E0B",
+        backgroundColor: "#FEF2C7",
       },
     ],
   };

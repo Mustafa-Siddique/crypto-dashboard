@@ -1,16 +1,25 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setDropDown } from "../features/chartSlice";
+import { getChartStart, setDropDown } from "../features/chartSlice";
 
 export const SearchArea = () => {
   const dispatch = useDispatch();
 
   const option = [{ name: "USD" }, { name: "INR" }];
+
+  // Importing the chartSlice from the redux store
+  const selectedCrypto = useSelector((state) => state.chart.dropdownAsset);
+  const selectedTimeline = useSelector((state) => state.chart.dropdownTime);
   const selectedCurrency = useSelector((state) => state.chart.dropdownCurrency);
 
+  // UseEffect to fetch the chart data
+  useEffect(() => {
+    dispatch(getChartStart({ asset: selectedCrypto, time: selectedTimeline, currency: selectedCurrency }))
+  }, [selectedCurrency])
+  
   return (
     <div className="flex justify-between">
       <Listbox
