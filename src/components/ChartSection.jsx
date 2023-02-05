@@ -90,11 +90,11 @@ export const ChartSection = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "none",
       },
       title: {
         display: true,
-        text: "Chart.js Line Chart",
+        text: selectedCrypto.toUpperCase(),
       },
     },
   };

@@ -145,7 +145,7 @@ export const Exchange = () => {
         Exchange <RiSwapLine className="inline-block" size={24} />
       </button>
       <p className="text-gray-400 mt-2">
-        1BTC = {!data || !data.bitcoin ? "Loading..." : data.bitcoin.eth}
+        1 BTC = {!data || !data.bitcoin ? "Loading..." : data.bitcoin.eth} ETH
       </p>
     </div>
   );

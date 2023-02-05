@@ -1,9 +1,126 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSelector, useDispatch } from "react-redux";
+import Web3 from "web3";
+import { addWallet } from "../features/walletSlice";
 
 export const Navbar = () => {
+  // Redux
+  const dispatch = useDispatch();
+  const wallet = useSelector((state) => state.wallet.data);
+
+  // On page load
+  useEffect(() => {
+    getCurrentWallet();
+    addWalletListener();
+  }, []);
+
+  // Connect wallet function on click
+  const connectWallet = async () => {
+    if (
+      typeof window.ethereum !== "undefined" &&
+      typeof window !== "undefined"
+    ) {
+      try {
+        // Metamask is installed
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        dispatch(addWallet(accounts[0]));
+        // Sign and verify login message
+        const message = "Login to Cadillacs";
+        const web3 = new Web3(window.ethereum);
+        await web3.eth.personal.sign(message, accounts[0], (err, signature) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Signature", signature);
+          }
+        });
+        // Checking wallet network
+        // try {
+        //   await window.ethereum.request({
+        //     method: 'wallet_switchEthereumChain',
+        //     params: [{ chainId: '0x56' }],
+        //   });
+        // } catch (e) {
+        //   if (e.code === 4902) {
+        //     try {
+        //       await window.ethereum.request({
+        //         method: 'wallet_addEthereumChain',
+        //         params: [
+        //           {
+        //             chainId: '0x56',
+        //             chainName: 'BSC Mainnet',
+        //             nativeCurrency: {
+        //               name: 'Binance',
+        //               symbol: 'BNB', // 2-6 characters long
+        //               decimals: 18
+        //             },
+        //             blockExplorerUrls: ['https://bscscan.com/'],
+        //             rpcUrls: ['https://bsc-dataseed.binance.org/'],
+        //           },
+        //         ],
+        //       });
+        //     } catch (addError) {
+        //       console.error(addError);
+        //     }
+        //   }
+        // }
+      } catch (err) {
+        // User denied account access...
+        console.error(err);
+      }
+    } else {
+      // Metamask is not installed
+      console.log("Metamask is not installed");
+    }
+  };
+
+  // Get account info on page load
+  const getCurrentWallet = async () => {
+    if (
+      typeof window.ethereum !== "undefined" &&
+      typeof window !== "undefined"
+    ) {
+      try {
+        // Metamask is installed
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        if (accounts.length > 0) {
+          dispatch(addWallet(accounts[0]));
+        } else {
+          console.log("No accounts found");
+        }
+      } catch (err) {
+        // User denied account access...
+        console.error(err);
+      }
+    } else {
+      // Metamask is not installed
+      console.log("Metamask is not installed");
+    }
+  };
+
+  // Account chnage listener
+  const addWalletListener = async () => {
+    if (
+      typeof window.ethereum !== "undefined" &&
+      typeof window !== "undefined"
+    ) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          dispatch(addWallet(accounts[0]));
+        } else {
+          dispatch(addWallet(""));
+        }
+      });
+    }
+  };
+
   return (
     <Disclosure as="nav" className="bg-white-800">
       {({ open }) => (
@@ -43,8 +160,18 @@ export const Navbar = () => {
                     >
                       Home
                     </Link>
-                    <button className="bg-amber-300 py-1 px-3 rounded font-semibold hover:bg-amber-500 hover:text-white">
-                      Connect Wallet
+                    <button
+                      className="bg-amber-300 py-1 px-3 rounded font-semibold hover:bg-amber-500 hover:text-white"
+                      onClick={connectWallet}
+                      disabled={wallet.length > 0}
+                    >
+                      {wallet.length > 0 ? (
+                        <span className="text-gray-700">
+                          {wallet.slice(0, 6)}...{wallet.slice(-4)}
+                        </span>
+                      ) : (
+                        <span className="text-gray-700">Connect Wallet</span>
+                      )}
                     </button>
                   </div>
                 </div>
