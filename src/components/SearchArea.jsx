@@ -8,6 +8,7 @@ import { getChartStart, setDropDown } from "../features/chartSlice";
 export const SearchArea = () => {
   const dispatch = useDispatch();
 
+  // Dropdown for currency
   const option = [{ name: "USD" }, { name: "INR" }];
 
   // Importing the chartSlice from the redux store

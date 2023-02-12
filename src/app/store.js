@@ -7,8 +7,10 @@ import saga from "redux-saga";
 import { rootSaga } from "./rootSaga";
 import logger from "redux-logger";
 
+// Saga middleware
 const sagaMiddleware = saga();
 
+// Store
 export const store = configureStore({
   reducer: {
     trending: trendingReducer,
@@ -23,4 +25,5 @@ export const store = configureStore({
   ],
 });
 
+// Run saga
 sagaMiddleware.run(rootSaga);

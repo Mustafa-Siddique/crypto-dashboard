@@ -3,6 +3,7 @@ import { call, put, takeLatest, all } from "redux-saga/effects";
 import axios from "axios";
 import { getChartFailure, getChartSuccess, getChartStart } from "./chartSlice";
 
+// Fetch chart data from coingecko API
 function* fetchChart(e) {
   try {
     const reqOptions = {
@@ -17,10 +18,12 @@ function* fetchChart(e) {
   }
 }
 
+// Watcher saga
 function* watchFetchChart() {
   yield takeLatest(getChartStart.type, fetchChart);
 }
 
+// Export saga
 export function* chartSaga() {
   yield all([call(watchFetchChart)]);
 }

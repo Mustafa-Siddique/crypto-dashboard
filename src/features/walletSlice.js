@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state
 const initialState = {
   data: "",
 };
 
+// Slice
 export const walletSlice = createSlice({
   name: "wallet",
   initialState,
@@ -14,5 +16,6 @@ export const walletSlice = createSlice({
   },
 });
 
+// Actions
 export const { addWallet } = walletSlice.actions;
 export default walletSlice.reducer;

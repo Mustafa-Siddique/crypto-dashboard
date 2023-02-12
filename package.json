@@ -1,6 +1,7 @@
 {
   "name": "crypto-dashboard",
   "version": "0.1.0",
+  "author": "Mustafa-Siddique",
   "private": true,
   "proxy": "https://cadillacs.in",
   "dependencies": {

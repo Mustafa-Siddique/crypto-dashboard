@@ -56,7 +56,8 @@ export const Portfolio = () => {
       <div className="flex justify-between">
         <span className="text-xl font-semibold">Portfolio</span>
         <span className="text-gray-500">
-          Total Value: <span className="text-black font-semibold">{balance} BNBs</span>
+          Total BNB:{" "}
+          <span className="text-black font-semibold">{balance > 0 ? balance.slice(0,6) : 0} BNBs</span>
         </span>
       </div>
       <PiePortfolio />

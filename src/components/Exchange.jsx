@@ -1,23 +1,21 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { AiFillCaretDown } from "react-icons/ai";
-import { Listbox, Menu, Transition } from "@headlessui/react";
+import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { getExchangeStart } from "../features/exchangeSlice";
 import { RiSwapLine } from "react-icons/ri";
 
 export const Exchange = () => {
-  const [inputData, setInputData] = useState(0);
+  // state for the input and the dropdown
+  const [inputData, setInputData] = useState(null);
   const data = useSelector((state) => state.exchange.data);
+
   const dispatch = useDispatch();
 
+  // useEffect to get the data from the api
   useEffect(() => {
     dispatch(getExchangeStart());
   }, []);
-
-  //   useEffect(() => {
-  //     console.log("Exchange: ", data.bitcoin.eth);
-  //   }, [data]);
 
   // Dropdown for Sell
   const option = [{ name: "BTC" }, { name: "ETH" }];
@@ -103,7 +101,7 @@ export const Exchange = () => {
             id=""
             value={inputData}
             onChange={(e) => setInputData(e.target.value)}
-            className="border rounded py-2 text-black font-semibold focus:outline-none px-2"
+            className="border rounded py-2 text-black w-6/12 font-semibold focus:outline-none px-2"
             placeholder="Enter Value"
           />
         </div>
@@ -133,7 +131,7 @@ export const Exchange = () => {
             id=""
             disabled
             value={btcToEth(inputData)}
-            className="border rounded py-2 text-black font-semibold focus:outline-none px-2"
+            className="border rounded py-2 w-6/12 text-black font-semibold focus:outline-none px-2"
             placeholder="Enter Value"
           />
         </div>

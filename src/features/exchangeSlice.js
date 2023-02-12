@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state
 const initialState = {
   data: [],
   error: "",
 };
 
+// Slice
 export const exchangeSlice = createSlice({
   name: "exchange",
   initialState,
@@ -19,6 +21,7 @@ export const exchangeSlice = createSlice({
   },
 });
 
+// Actions
 export const { getExchangeStart, getExchangeSuccess, getExchangeFailure } =
   exchangeSlice.actions;
   

@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state
 const initialState = {
   data: [],
   error: "",
 };
 
+// Slice
 export const trendingSlice = createSlice({
   name: "trending",
   initialState,
@@ -19,6 +21,7 @@ export const trendingSlice = createSlice({
   },
 });
 
+// Actions
 export const { getTrendingStart, getTrendingSuccess, getTrendingFailure } =
   trendingSlice.actions;
 

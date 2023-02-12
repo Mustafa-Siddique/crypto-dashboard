@@ -2,6 +2,7 @@ import { call, put, takeLatest, all } from "redux-saga/effects";
 import axios from "axios";
 import { getTrendingFailure, getTrendingSuccess } from "./trendingSlice";
 
+// Fetch trending data from coingecko API
 function* fetchTrending() {
   try {
     const reqOptions = {
@@ -16,10 +17,12 @@ function* fetchTrending() {
   }
 }
 
+// Watcher saga
 function* watchFetchTrending() {
   yield takeLatest("trending/getTrendingStart", fetchTrending);
 }
 
+// Export saga
 export function* trendingSaga() {
   yield all([call(watchFetchTrending)]);
 }

@@ -5,7 +5,7 @@ export const Footer = () => {
     <div className="py-4 text-center border-t-2 mt-12">
       <p className="mb-0">
         Designed and Created by{" "}
-        <a href="/" target="_blank" rel="noreferrer" className="font-bold">
+        <a href="https://github.com/Mustafa-Siddique" target="_blank" rel="noreferrer" className="font-bold">
           Mustafa Siddique
         </a>
       </p>

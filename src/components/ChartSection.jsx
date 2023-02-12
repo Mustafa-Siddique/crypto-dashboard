@@ -9,20 +9,27 @@ import {
   Tooltip,
   Filler,
   Legend,
+  BarElement,
+  RadialLinearScale,
+  ArcElement,
 } from "chart.js";
 import { Listbox } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
-import { Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { getChartStart, setDropDown } from "../features/chartSlice";
 import moment from "moment";
 
+// Registering the chart.js plugins
 ChartJS.register(
   CategoryScale,
+  RadialLinearScale,
+  ArcElement,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Filler,
@@ -99,6 +106,7 @@ export const ChartSection = () => {
     },
   };
 
+  // Converting epoch time to date using moment
   const labels = chartData.prices
     ? chartData.prices.map((item) =>
         moment(item[0]).format(selectedTimeline < 2 ? "LT" : "MMM Do YY")
@@ -109,7 +117,7 @@ export const ChartSection = () => {
     labels,
     datasets: [
       {
-        fill: true,
+        fill: selected2.name === "Area",
         // converting epoch time to date using moment
         data: chartData.prices
           ? chartData.prices.map((item) => item[1])
@@ -255,7 +263,13 @@ export const ChartSection = () => {
         </div>
       </div>
       {/* Chart Here! */}
-      <Line options={options} data={data} />
+      {selected2.name === "Area" ? (
+        <Line data={data} options={options} />
+      ) : selected2.name === "Bar" ? (
+        <Bar data={data} options={options} />
+      ) : (
+        <Line data={data} options={options} />
+      )}
     </div>
   );
 };

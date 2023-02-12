@@ -39,36 +39,7 @@ export const Navbar = () => {
             console.log("Signature", signature);
           }
         });
-        // Checking wallet network
-        // try {
-        //   await window.ethereum.request({
-        //     method: 'wallet_switchEthereumChain',
-        //     params: [{ chainId: '0x56' }],
-        //   });
-        // } catch (e) {
-        //   if (e.code === 4902) {
-        //     try {
-        //       await window.ethereum.request({
-        //         method: 'wallet_addEthereumChain',
-        //         params: [
-        //           {
-        //             chainId: '0x56',
-        //             chainName: 'BSC Mainnet',
-        //             nativeCurrency: {
-        //               name: 'Binance',
-        //               symbol: 'BNB', // 2-6 characters long
-        //               decimals: 18
-        //             },
-        //             blockExplorerUrls: ['https://bscscan.com/'],
-        //             rpcUrls: ['https://bsc-dataseed.binance.org/'],
-        //           },
-        //         ],
-        //       });
-        //     } catch (addError) {
-        //       console.error(addError);
-        //     }
-        //   }
-        // }
+        
       } catch (err) {
         // User denied account access...
         console.error(err);

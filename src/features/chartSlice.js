@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state
 const initialState = {
   data: [],
   error: "",
@@ -8,6 +9,7 @@ const initialState = {
   dropdownAsset: "bitcoin",
 };
 
+// Slice
 export const chartSlice = createSlice({
   name: "chart",
   initialState,
@@ -31,7 +33,7 @@ export const chartSlice = createSlice({
   },
 });
 
+// Actions
 export const { getChartStart, getChartSuccess, getChartFailure, setDropDown } =
   chartSlice.actions;
-
 export default chartSlice.reducer;

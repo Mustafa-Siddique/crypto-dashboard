@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTrendingStart } from "../features/trendingSlice";
 
 export const CryptoRankings = () => {
+  // Redux
   const data = useSelector((state) => state.trending.data);
   const dispatch = useDispatch();
 
+  // Get trending data on page load
   useEffect(() => {
     dispatch(getTrendingStart());
   }, []);
-
-  // useEffect(() => {
-  //   console.log(data, "trending data");
-  // }, [data]);
 
   return (
     <div className="bg-white text-black rounded-md p-2 h-full">
