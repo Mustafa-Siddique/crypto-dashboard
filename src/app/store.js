@@ -1,3 +1,4 @@
+// @ts-check
 import { configureStore } from "@reduxjs/toolkit";
 import trendingReducer from "../features/trendingSlice";
 import exchangeReducer from "../features/exchangeSlice";
@@ -10,6 +11,11 @@ import logger from "redux-logger";
 // Saga middleware
 const sagaMiddleware = saga();
 
+const middleware = [sagaMiddleware];
+if (process.env.NODE_ENV === "development") {
+  middleware.push(logger);
+}
+
 // Store
 export const store = configureStore({
   reducer: {
@@ -20,8 +26,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({ thunk: false }),
-    sagaMiddleware,
-    process.env.NODE_ENV === "development" && logger,
+    ...middleware,
   ],
 });
 
